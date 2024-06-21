@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel to JSON Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling of the entire body */
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            max-height: 90vh; /* Limit the container height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            width: 90%; /* Limit container width */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            text-align: left;
+            background-color: #f7f7f7;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            max-height: 400px; /* Limit height of JSON output */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Excel to JSON Converter</h1>
+        <input type="file" id="fileInput" accept=".xlsx, .xls">
+        <button id="convertBtn">Convert to JSON</button>
+        <button id="showTableBtn">Show Excel Data</button>
+        <pre id="jsonOutput"></pre>
+        <div id="tableContainer"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('convertBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file first.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankRows: false });
+
+                const jsonOutput = JSON.stringify(json, null, 2);
+                document.getElementById('jsonOutput').textContent = jsonOutput;
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+
+        document.getElementById('showTableBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file first.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankRows: false });
+
+                const tableContainer = document.getElementById('tableContainer');
+                tableContainer.innerHTML = '';
+
+                const table = document.createElement('table');
+                table.classList.add('dataTable'); // Add a class for styling purposes
+                json.forEach((row, rowIndex) => {
+                    const tr = document.createElement('tr');
+                    row.forEach(cell => {
+                        const cellElement = rowIndex === 0 ? document.createElement('th') : document.createElement('td');
+                        cellElement.textContent = cell;
+                        tr.appendChild(cellElement);
+                    });
+                    table.appendChild(tr);
+                });
+
+                tableContainer.appendChild(table);
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
+</html>
