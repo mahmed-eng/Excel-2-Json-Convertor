@@ -21,7 +21,7 @@ This project provides a simple web application to convert Excel files (.xlsx, .x
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/excel-to-json-converter.git
+   git clone https://github.com/mahmed-eng/Excel-2-Json-Convertor.git
    cd excel-to-json-converter
 
 2. Open the index.html file in your preferred web browser.
@@ -35,17 +35,17 @@ This project provides a simple web application to convert Excel files (.xlsx, .x
 └── assets
     └── xlsx.full.min.js
 
-Code Explanation
-HTML
+### Code Explanation
+### HTML
 The main structure of the application is defined in the index.html file. The file includes the necessary elements for user interaction, such as file input, buttons for converting and displaying data, and containers for displaying the JSON output and table.
 
-CSS
+### CSS
 The styling is embedded within the index.html file, providing a clean and responsive design. Key styles include:
-
 Flexbox layout for centering the content.
 Styling for buttons and containers.
 Responsive design elements to ensure usability on different screen sizes.
-JavaScript
+
+### JavaScript
 The functionality is powered by JavaScript, using the SheetJS (xlsx) library to handle Excel file reading and conversion.
 
 ## File Reading:
@@ -71,6 +71,6 @@ Contributions are welcome! Please create an issue first to discuss what you woul
 
 ## Contact
 For any inquiries, please contact 
-## LinkedIn: https://www.linkedin.com/in/m-ahmed-hashmi-a119a021b/
+### LinkedIn: https://www.linkedin.com/in/m-ahmed-hashmi-a119a021b/
 
-## Github: https://github.com/mahmed-eng
+### Github: https://github.com/mahmed-eng
